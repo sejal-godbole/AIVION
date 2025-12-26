@@ -20,6 +20,9 @@ import { FileText } from 'lucide-react'
 import { GraduationCap } from 'lucide-react'
 import { checkUser} from '@/lib/checkUser';
 import { Search } from 'lucide-react'
+import { Flame } from "lucide-react";
+import { Linkedin } from 'lucide-react'
+
 
 const Header = async () =>  {
   await checkUser();
@@ -29,7 +32,7 @@ const Header = async () =>  {
         <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
             <Link href="/">
               <Image
-                src="/logo.png"
+                src="/logo3.png"
                 alt="Logo"
                 width={120}
                 height={60}
@@ -77,6 +80,18 @@ const Header = async () =>  {
                       <Link href={'/ats-scanner'} className='flex items-center space-x-2'>
                         <Search className="h-4 w-4" />
                         <span>ATS Scanner</span>
+                      </Link>                      
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={'/github-roast'} className='flex items-center space-x-2'>
+                        <Flame className="h-4 w-4" />
+                        <span>GitHub Roaster</span>
+                      </Link>                      
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link href={'/linkedin-generator'} className='flex items-center space-x-2'>
+                        <Linkedin className="h-4 w-4" />
+                        <span>Viral Linkedin Post</span>
                       </Link>                      
                     </DropdownMenuItem>
                   </DropdownMenuContent>

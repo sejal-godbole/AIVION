@@ -23,6 +23,7 @@ model User {
   assessments     Assessment[]
   coverLetter     CoverLetter[]
   resume          Resume?
+  roasts GithubRoast[]
   industryInsight IndustryInsight? @relation(fields: [industry], references: [industry])
 }
 
@@ -81,6 +82,17 @@ model IndustryInsight {
   users             User[]
 
   @@index([industry])
+}
+
+model GithubRoast {
+  id        String   @id @default(cuid())
+  userId    String
+  username  String   // The GitHub username roasted
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 enum DemandLevel {

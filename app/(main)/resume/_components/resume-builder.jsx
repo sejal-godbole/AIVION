@@ -23,7 +23,8 @@ import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
+import jsPDF from "jspdf";
+import { toJpeg } from "html-to-image"; // CHANGE 1: Import toJpeg
 
 export default function ResumeBuilder({ initialContent }) {
   const [activeTab, setActiveTab] = useState("edit");
@@ -112,26 +113,55 @@ export default function ResumeBuilder({ initialContent }) {
 
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const generatePDF = async () => {
+
+
+
+const generatePDF = async () => {
     setIsGenerating(true);
     try {
       const element = document.getElementById("resume-pdf");
-      const opt = {
-        margin: [15, 15],
-        filename: "resume.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-      };
+      if (!element) throw new Error("Resume element not found");
 
-      await html2pdf().set(opt).from(element).save();
+      // 1. Capture as JPEG (Safer than PNG for PDF generation)
+      const imgData = await toJpeg(element, {
+        quality: 0.98,
+        pixelRatio: 2, // Higher quality
+        backgroundColor: "#ffffff", // Force white background (Critical!)
+        style: {
+          // Explicitly override any problematic variables locally
+          fontFamily: "Arial, sans-serif" 
+        }
+      });
+
+      if (!imgData) {
+        throw new Error("Failed to generate image data");
+      }
+
+      // 2. Create PDF
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+      const imgProps = pdf.getImageProperties(imgData);
+      const imgWidth = imgProps.width;
+      const imgHeight = imgProps.height;
+      
+      // Calculate ratio to fit width
+      const ratio = pdfWidth / imgWidth;
+      const finalHeight = imgHeight * ratio;
+
+      // 3. Add image to PDF (Use 'JPEG' explicitly)
+      pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, finalHeight);
+      pdf.save("resume.pdf");
+
     } catch (error) {
       console.error("PDF generation error:", error);
+      alert("Could not generate PDF. Please try again.");
     } finally {
       setIsGenerating(false);
     }
-  };
-
+};
   const onSubmit = async (data) => {
     try {
       const formattedContent = previewContent

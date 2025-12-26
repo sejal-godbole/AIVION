@@ -7,7 +7,7 @@ export default function Layout({ children }) {
       <Suspense
         fallback={<BarLoader className="mt-4" width={"100%"} color="gray" />}
       >
-        <h1 className="text-5xl font-bold gradient-title">ATS Scanner</h1>
+        <h1 className="text-5xl font-bold gradient-title text-center">ATS Scanner</h1>
         {children}
       </Suspense>
     </div>
