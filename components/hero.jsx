@@ -48,7 +48,7 @@ const HeroSection = () => {
                     <Link href="/dashboard">
                         <Button size="lg" className="px-8">Get Started</Button>
                     </Link>
-                    <Link href="https://github.com/sejal-godbole/sensai.git">
+                    <Link href="https://github.com/sejal-godbole/avion.git">
                         <Button size="lg" className="px-8">Get Started</Button>
                     </Link>
                 </div>
