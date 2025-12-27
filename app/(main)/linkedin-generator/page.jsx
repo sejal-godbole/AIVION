@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { generateLinkedinPost } from "@/actions/generatePost";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import ReactMarkdown from "react-markdown"; // Imported
 
 export default function LinkedinGeneratorPage() {
   const [input, setInput] = useState("");
@@ -67,7 +68,7 @@ export default function LinkedinGeneratorPage() {
         </p>
       </div>
 
-      {/* 2. Input Section (Centered Card) */}
+      {/* 2. Input Section */}
       <Card>
         <CardHeader>
           <CardTitle>What happened today?</CardTitle>
@@ -104,7 +105,7 @@ export default function LinkedinGeneratorPage() {
         </CardFooter>
       </Card>
 
-      {/* 3. Output Section (Appears below) */}
+      {/* 3. Output Section */}
       {generatedPost && (
         <div id="post-result" className="animate-in fade-in slide-in-from-bottom-10 duration-500">
              <div className="flex items-center gap-2 mb-4 text-muted-foreground font-medium justify-center">
@@ -127,7 +128,7 @@ export default function LinkedinGeneratorPage() {
                     <AvatarFallback>AI</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <p className="text-sm font-semibold text-foreground">AI Thought Leader</p>
+                    <p className="text-sm font-semibold text-foreground">AIVION Thought Leader</p>
                     <p className="text-xs text-muted-foreground">Global Keynote Speaker | 10x Innovator</p>
                     <p className="text-xs text-muted-foreground flex items-center gap-1">
                         <span>Just now</span> • <span className="text-lg leading-none pb-1">🌎</span>
@@ -136,12 +137,25 @@ export default function LinkedinGeneratorPage() {
                 </CardHeader>
                 
                 <CardContent className="p-0">
-                    {/* Caption */}
-                    <div className="px-4 pb-3 whitespace-pre-wrap text-sm leading-relaxed text-foreground/90 font-sans">
-                        {generatedPost.content}
+                    {/* MARKDOWN CAPTION */}
+                    <div className="px-4 pb-3 text-sm text-foreground/90 font-sans">
+                        <ReactMarkdown
+                          components={{
+                            // Override default elements to fix Tailwind resets
+                            p: ({node, ...props}) => <p className="mb-4 whitespace-pre-line last:mb-0" {...props} />,
+                            strong: ({node, ...props}) => <span className="font-bold text-foreground" {...props} />,
+                            em: ({node, ...props}) => <span className="italic" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc pl-4 mb-4" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal pl-4 mb-4" {...props} />,
+                            li: ({node, ...props}) => <li className="mb-1" {...props} />,
+                            a: ({node, ...props}) => <a className="text-blue-600 hover:underline" target="_blank" {...props} />,
+                          }}
+                        >
+                            {generatedPost.content}
+                        </ReactMarkdown>
                     </div>
                     
-                    {/* Generated Image */}
+                    {/* Generated Image with Error Handler */}
                     {generatedPost.imageUrl && (
                         <div className="w-full h-auto bg-gray-100 dark:bg-gray-800 border-t border-b border-gray-200 dark:border-gray-700">
                             <img 
@@ -149,6 +163,10 @@ export default function LinkedinGeneratorPage() {
                                 alt="AI Generated visualization" 
                                 className="w-full h-auto object-cover max-h-[500px]"
                                 loading="eager"
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.parentElement.innerHTML = '<div class="p-8 text-center text-muted-foreground text-sm">Image generation timed out. <br/>(Free API limit reached)</div>';
+                                }}
                             />
                         </div>
                     )}

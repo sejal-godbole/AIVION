@@ -16,19 +16,20 @@ export async function generateLinkedinPost(userInput) {
       Act as a viral LinkedIn "Thought Leader".
       Rewrite this simple thought into a long, cringey, multi-paragraph post about "hustle," "mindset," and B2B success.
       INPUT: "${userInput}"
-      GUIDELINES: Use short sentences, lots of line breaks, 5+ emojis, and end with a question like "Agree?". Add 3 hashtags. No bold markdown.
+      GUIDELINES: Use short sentences, lots of line breaks, 5+ emojis, and end with a question like "Agree?". Add 3 hashtags. No bold markdown. Use English language, good for Indian users
     `;
     
     const textResponse = await textModel.generateContent(textPrompt);
     const textContent = textResponse.response.text();
 
     // 2. Generate Image URL (Pollinations.ai)
-    // No fetch needed! We just create a smart URL.
-    const cleanPrompt = encodeURIComponent(`${userInput}, corporate, professional photography, 4k, linkedin style`);
-    const randomSeed = Math.floor(Math.random() * 1000); // Randomizes the image every time
+    // FIX: Sanitize input (remove newlines) and limit length to avoid URL errors
+    const sanitizedInput = userInput.replace(/\n/g, " ").slice(0, 100); 
+    const cleanPrompt = encodeURIComponent(`${sanitizedInput} corporate professional photography 4k linkedin style`);
+    const randomSeed = Math.floor(Math.random() * 10000); 
     
-    // We construct the URL. The browser will fetch the image when it renders.
-    const imageUrl = `https://pollinations.ai/p/${cleanPrompt}?width=1024&height=1024&seed=${randomSeed}&model=flux`;
+    // Using 'turbo' model for faster loading, or remove model param to use default
+    const imageUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=1024&height=1024&seed=${randomSeed}&nologo=true&model=flux`;
 
     return { content: textContent, imageUrl: imageUrl };
 
