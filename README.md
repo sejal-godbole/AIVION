@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Avion
 
-## Getting Started
+A professional AI career toolkit — resume builder, cover letters, interview prep, and more.
 
-First, run the development server:
+## Overview
+
+Avion is a Next.js application that provides AI-powered career tools including an intelligent resume builder, cover letter generator, ATS scanner, adaptive interview practice, and other utilities to help users prepare for and land jobs.
+
+### Key features
+- Intelligent resume builder and resume templates
+- AI-generated cover letters and LinkedIn content
+- Adaptive interview practice with analytics
+- ATS scanner for parsing and improving resumes
+- Additional utilities: GitHub roast, negotiation helper, onboarding flows, and dashboards
+
+## Tech stack
+
+- Next.js 16
+- React 19
+- Tailwind CSS
+- Prisma (database migrations in `prisma/`)
+- Inngest (background functions)
+- Clerk (authentication)
+- Server-side & client-side AI integrations (see dependencies in `package.json`)
+
+## Skills & Tech Stack
+
+This project demonstrates practical experience across modern full-stack web development, AI integrations, and production-ready tooling. Key skills showcased:
+
+- Frontend: Advanced Next.js 16 and React 19 patterns (app directory, server/client components), responsive UI with Tailwind CSS, accessibility-aware components
+- Backend & Data: Prisma schema design and migrations, relational DB usage (Postgres-compatible), server-side route handlers and API integrations
+- Authentication & Security: Clerk for authentication and session management, secure env var handling for API keys and `DATABASE_URL`
+- AI & Integrations: Google Generative AI integration, server/client AI prompts and streaming responses, resume/cover-letter generation workflows
+- Background Processing: Inngest for serverless background functions and event-driven processing
+- Developer Experience: ESLint, Prettier, modular component architecture, reusable UI primitives, and testing-ready structure
+- DevOps & Deployment: Vercel-friendly Next.js deployment, environment variable management, Prisma migrations in CI/CD
+- Observability & Performance: Client-side performance optimizations, image optimization, and attention to bundle size and caching strategies
+
+Badges & quick facts
+
+- Language: JavaScript (ES2023)
+- Framework: Next.js 16 (React 19)
+- Styling: Tailwind CSS
+- ORM: Prisma
+- Background Jobs: Inngest
+- Auth: Clerk
+- AI: Google Generative AI (configurable)
+
+## Repository layout
+
+- `app/` — Next.js app routes and pages (features live under `app/(main)/`)
+- `components/` — UI components and static data (`components/data/faqs.js`)
+- `lib/` — helpers, Inngest client, Prisma client, utilities
+- `prisma/` — Prisma schema and migrations
+- `actions/` — server actions and API helpers
+- `public/` — static assets
+
+## Prerequisites
+
+- Node.js 18+ and npm or pnpm
+- A database supported by Prisma (e.g., PostgreSQL) and a `DATABASE_URL` environment variable
+- Clerk account and keys (for authentication)
+- Google generative AI credentials if you intend to use the generative features
+
+## Quick Start (local)
+
+1. Install dependencies
+
+```bash
+npm install
+```
+
+2. Create a `.env` file at the project root and add required environment variables. At minimum you'll likely need:
+
+- `DATABASE_URL` — Prisma database connection string
+- Clerk environment variables (see Clerk dashboard)
+- Any API keys required for AI integrations (e.g., Google generative AI)
+
+3. Run Prisma migrations (if you have a local DB configured)
+
+```bash
+npx prisma migrate dev
+```
+
+4. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 to view the app.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Scripts (from `package.json`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `dev` — Start Next.js dev server
+- `build` — Build the app for production
+- `start` — Start the production server
+- `lint` — Run ESLint
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+This project deploys well on Vercel (recommended for Next.js), or any platform that supports Node.js apps. Ensure all environment variables (database, Clerk, AI keys) are configured in your provider.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Database & Migrations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+See `prisma/schema.prisma` and the `prisma/migrations` folder. Use the Prisma CLI to apply or create migrations.
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Fork the repo and create a feature branch
+2. Run and test locally
+3. Submit a pull request with a clear description of changes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- The project name in `package.json` has been updated to `avion`.
+- Check `components/data/faqs.js` and `components/hero.jsx` for content and upstream links that reference the project name.
+
+## License
+
+Add a license file if you plan to open-source this project.
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
